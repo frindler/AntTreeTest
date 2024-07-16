@@ -1,0 +1,87 @@
+﻿@page "/"
+@using System.Text.Json
+
+<PageTitle>Home</PageTitle>
+
+<div>
+    <Tree ShowIcon Checkable DefaultExpandAll
+          CheckedKeys="@_selected"
+          CheckedKeysChanged="Callback"
+          DataSource="datas"
+          KeyExpression="x=>x.DataItem.Id"
+          TitleExpression="x => x.DataItem.Title"
+          ChildrenExpression="x => x.DataItem.Children">
+    </Tree>
+</div>
+@JsonSerializer.Serialize(_selected)
+
+@code {
+    string[]? _selected;
+
+    List<Data> datas = new List<Data>()
+                       {
+                           new("0-0", "0-0")
+                           {
+                               Children = new()
+                                          {
+                                              new("0-0-0", "0-0-0")
+                                              {
+                                                  Children = new()
+                                                             {
+                                                                 new("0-0-0-0", "0-0-0-0"),
+                                                                 new("0-0-0-1", "0-0-0-1"),
+                                                                 new("0-0-0-2", "0-0-0-2"),
+                                                             }
+                                              },
+                                              new("0-0-1", "0-0-1")
+                                              {
+                                                  Children = new()
+                                                             {
+                                                                 new("0-0-1-0", "0-0-1-0"),
+                                                                 new("0-0-1-1", "0-0-1-1"),
+                                                                 new("0-0-1-2", "0-0-1-2"),
+                                                             }
+                                              },
+                                              new("0-0-2", "0-0-2"),
+                                          }
+                           },
+                           new("0-1", "0-1")
+                           {
+                               Children = new()
+                                          {
+                                              new("0-1-0", "0-1-0")
+                                              {
+                                                  Children = new()
+                                                             {
+                                                                 new("0-1-0-0", "0-1-0-0"),
+                                                                 new("0-1-0-1", "0-1-0-1"),
+                                                                 new("0-1-0-2", "0-1-0-2"),
+                                                             },
+                                              },
+                                              new("0-1-1", "0-1-1")
+                                              {
+                                                  Children = new()
+                                                             {
+                                                                 new("0-1-1-0", "0-1-1-0"),
+                                                                 new("0-1-1-1", "0-1-1-1"),
+                                                                 new("0-1-1-2", "0-1-1-2"),
+                                                             },
+                                              },
+                                              new("0-1-2", "0-1-2"),
+                                          }
+                           },
+                           new("0-2", "0-2"),
+                       };
+
+    private record Data(string Id, string Title)
+    {
+        public List<Data> Children { get; set; } = new List<Data>();
+    }
+
+    private void Callback(string[] obj)
+    {
+        _selected = obj;
+    }
+
+}
+
